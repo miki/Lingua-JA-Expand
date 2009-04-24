@@ -1,0 +1,13 @@
+Revision history for Perl extension Lingua::JA::Expand
+
+0.00003  2008/10/30
+        - use Lingua::JA::TFIDF
+        - fix a bug (about handling of config data)
+
+0.00002  2008/10/22
+        - add raw_data() method in DataSource class.
+        - transfer config information to any object.
+        - increase NG word in Tokenizer::MeCab.
+
+0.00001  2008/10/16
+        - original version

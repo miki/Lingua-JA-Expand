@@ -2,8 +2,10 @@ package Lingua::JA::Expand::Tokenizer::MeCab;
 
 use strict;
 use warnings;
-use base qw(Lingua::JA::Expand::Tokenizer);
 use Lingua::JA::TFIDF;
+use base qw(Lingua::JA::Expand::Tokenizer);
+
+__PACKAGE__->mk_accessors($_) for qw(_calc);
 
 sub tokenize {
     my $self      = shift;
@@ -12,18 +14,12 @@ sub tokenize {
     my $config    = $self->config;
     $threshold ||= $config->{threshold};
     $threshold ||= 100;
-
     my %hash;
-    my @ngword = _NG();
-
-    my $calc = Lingua::JA::TFIDF->new(%$config);
-    $calc->ng_word( \@ngword );
-    my $list = $calc->tfidf($$text_ref)->list($threshold);
+    my $list = $self->calc->tfidf($$text_ref)->list($threshold);
     for (@$list) {
         my ( $word, $score ) = each(%$_);
         $hash{$word} = $score;
     }
-
     return \%hash;
 }
 
@@ -45,6 +41,16 @@ sub _NG {
         qw(a b c d e f g h i j k l m n o p q r s t u v w x y z),
         qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z),
     );
+}
+
+sub calc {
+    my $self = shift;
+    $self->_calc or sub {
+        my $calc = Lingua::JA::TFIDF->new( $self->config );
+        $calc->ng_word( [ _NG() ] );
+        $calc;
+      }
+      ->();
 }
 
 1;
@@ -72,6 +78,8 @@ Lingua::JA::Expand::Tokenizer::MeCab is Tokenizer based on MeCab
 =head1 METHODS
 
 =head2 tokenize()
+
+=head2 calc()
 
 =head1 AUTHOR
 

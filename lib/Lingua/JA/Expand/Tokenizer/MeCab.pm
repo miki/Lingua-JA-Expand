@@ -46,7 +46,7 @@ sub _NG {
 sub calc {
     my $self = shift;
     $self->_calc or sub {
-        my $calc = Lingua::JA::TFIDF->new( $self->config );
+        my $calc = Lingua::JA::TFIDF->new( %{$self->config} );
         $calc->ng_word( [ _NG() ] );
         $calc;
       }

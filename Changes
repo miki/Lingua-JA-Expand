@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::JA::Expand
 
+0.00005  2009/09/02
+        - fix a bug
+
 0.00004  2009/09/02
         - performance tune ( create Lingua::JA::TFIDF object one time )
  

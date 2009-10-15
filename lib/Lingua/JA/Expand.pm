@@ -20,8 +20,11 @@ sub expand {
     my $self      = shift;
     my $word      = shift;
     my $threshold = shift || 30;
-    my $text_ref  = $self->datasource->extract_text(\$word);
-    my $word_set  = $self->tokenizer->tokenize( $text_ref, $threshold );
+    if ( $word !~ /./ ) {
+        carp("put any word") and return;
+    }
+    my $text_ref = $self->datasource->extract_text( \$word );
+    my $word_set = $self->tokenizer->tokenize( $text_ref, $threshold );
     return $word_set;
 }
 

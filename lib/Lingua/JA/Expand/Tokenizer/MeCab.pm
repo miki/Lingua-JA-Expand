@@ -3,6 +3,7 @@ package Lingua::JA::Expand::Tokenizer::MeCab;
 use strict;
 use warnings;
 use Lingua::JA::TFIDF;
+use Carp;
 use base qw(Lingua::JA::Expand::Tokenizer);
 
 __PACKAGE__->mk_accessors($_) for qw(_calc);
@@ -11,7 +12,12 @@ sub tokenize {
     my $self      = shift;
     my $text_ref  = shift;
     my $threshold = shift;
-    my $config    = $self->config;
+
+    if ( ref $text_ref ne 'SCALAR' ) {
+        carp("Tokenizer has no text") and return;
+    }
+
+    my $config = $self->config;
     $threshold ||= $config->{threshold};
     $threshold ||= 100;
     my %hash;
@@ -46,7 +52,7 @@ sub _NG {
 sub calc {
     my $self = shift;
     $self->_calc or sub {
-        my $calc = Lingua::JA::TFIDF->new( %{$self->config} );
+        my $calc = Lingua::JA::TFIDF->new( %{ $self->config } );
         $calc->ng_word( [ _NG() ] );
         $calc;
       }

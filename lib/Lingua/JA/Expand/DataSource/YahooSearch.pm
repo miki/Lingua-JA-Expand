@@ -19,6 +19,10 @@ sub extract_text {
     my $self     = shift;
     my $word_ref = shift;
     my $xml      = $self->raw_data($word_ref);
+    if(my $error_msg =  $xml->{'Error'}->{'Message'} ){
+        $error_msg =~ s/\n//g; 
+        carp("Yahoo API returns error message : $error_msg") and return;
+    }
     my $text;
     if ( ref $xml->{ResultSet}->{Result} eq 'ARRAY' ) {
         my @items = @{ $xml->{ResultSet}->{Result} };

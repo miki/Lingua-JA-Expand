@@ -2,6 +2,7 @@ package Lingua::JA::Expand::DataSource::YahooSearch;
 use strict;
 use warnings;
 use base qw(Lingua::JA::Expand::DataSource);
+use Carp;
 use LWP::UserAgent;
 use XML::TreePP;
 
@@ -59,7 +60,8 @@ sub _prepare {
         %XML_TreePP_config = %{ $self->config->{XML_TreePP} };
     }
     $self->{xml_treepp} = XML::TreePP->new(%XML_TreePP_config);
-    my $yahoo_api_appid = $self->config->{yahoo_api_appid} || 'yahooDemo';
+    my $yahoo_api_appid = $self->config->{yahoo_api_appid};
+    croak("you must set your own 'yahoo_api_app_id'") if !$yahoo_api_appid;
     $self->{url} =
         'http://search.yahooapis.jp/WebSearchService/V1/webSearch?appid='
       . $yahoo_api_appid
@@ -78,6 +80,9 @@ Lingua::JA::Expand::DataSource::YahooSearch - DataSource depend on Yahoo Web API
 
   use Lingua::JA::Expand::DataSource::YahooSearch;
 
+  my %conf = (
+    yahoo_api_appid => 'xxxxxxxxxxxxx',
+  );
   my $datasource = Lingua::JA::Expand::DataSource::YahooSearch->new(\%conf);
   my $text_ref   = $datasource->extract_text(\$word);
   my $xml_ref    = $datasource->raw_xml(\$word); 
@@ -85,6 +90,7 @@ Lingua::JA::Expand::DataSource::YahooSearch - DataSource depend on Yahoo Web API
 =head1 DESCRIPTION
 
 Lingua::JA::Expand::DataSource::YahooSearch is DataSource depend on Yahoo Web API 
+You must set your own 'yahoo_api_appid',
 
 =head1 METHODS
 

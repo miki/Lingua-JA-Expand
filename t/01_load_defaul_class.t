@@ -6,7 +6,12 @@ use Data::Dumper;
 
 # load default class
 {
-    my $exp = Lingua::JA::Expand->new;
+
+    my %config = (
+        yahoo_api_appid => 'dummy'
+    );
+
+    my $exp = Lingua::JA::Expand->new(%config);
     isa_ok($exp, 'Lingua::JA::Expand');
 
     my $tokenizer = $exp->tokenizer;

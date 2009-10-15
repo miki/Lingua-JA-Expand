@@ -6,7 +6,7 @@ use Carp;
 use base qw(Lingua::JA::Expand::Base);
 use UNIVERSAL::require;
 
-our $VERSION = '0.00005';
+our $VERSION = '0.00006';
 
 __PACKAGE__->mk_accessors qw(_tokenizer _datasource);
 
@@ -77,6 +77,10 @@ Lingua::JA::Expand - word expander by associatives
 
   use Lingua::JA::Expand;
   use Data::Dumper;
+
+  my %conf = (
+    yahoo_api_appid => 'xxxxxxxxxxxx',
+  );
 
   my $exp = Lingua::JA::Expand->new(%conf);
 

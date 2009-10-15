@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::Expand
 
+0.00006  2009/10/15
+        - change a rule that module user must set his own 'yahoo_api_appid'.
+          ( remove default app_id 'yahooDemo')
+
 0.00005  2009/09/02
         - fix a bug
 

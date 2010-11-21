@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::Expand
 
+0.00007  2010/11/21
+        - change Yahoo Japan API's XML URL (Version 2)
+        - use XML::LibXML::Simple instead of XML::TreePP
+
 0.00006  2009/10/15
         - change a rule that module user must set his own 'yahoo_api_appid'.
           ( remove default app_id 'yahooDemo')

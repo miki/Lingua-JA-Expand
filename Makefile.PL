@@ -8,7 +8,7 @@ requires 'Carp';
 requires 'Class::Accessor::Fast';
 requires 'Class::Data::Inheritable';
 requires 'LWP::UserAgent';
-requires 'XML::TreePP';
+requires 'XML::LibXML::Simple';
 requires 'Lingua::JA::TFIDF';
 build_requires 'Test::More';
 tests 't/*.t t/*/*.t';

@@ -6,7 +6,7 @@ use Carp;
 use base qw(Lingua::JA::Expand::Base);
 use UNIVERSAL::require;
 
-our $VERSION = '0.00006';
+our $VERSION = '0.00007';
 
 __PACKAGE__->mk_accessors qw(_tokenizer _datasource);
 

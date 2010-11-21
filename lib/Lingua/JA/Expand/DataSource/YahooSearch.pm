@@ -4,7 +4,7 @@ use warnings;
 use base qw(Lingua::JA::Expand::DataSource);
 use Carp;
 use LWP::UserAgent;
-use XML::TreePP;
+use XML::LibXML::Simple;
 
 __PACKAGE__->mk_accessors($_) for qw(_xml);
 
@@ -19,8 +19,8 @@ sub extract_text {
     my $self     = shift;
     my $word_ref = shift;
     my $xml      = $self->raw_data($word_ref);
-    if(my $error_msg =  $xml->{'Error'}->{'Message'} ){
-        $error_msg =~ s/\n//g; 
+    if ( my $error_msg = $xml->{'Error'}->{'Message'} ) {
+        $error_msg =~ s/\n//g;
         carp("Yahoo API returns error message : $error_msg") and return;
     }
     my $text;
@@ -44,7 +44,7 @@ sub raw_data {
         my $url = $self->{url} . $$word_ref;
         my $req = HTTP::Request->new( GET => $url );
         my $res = $self->{user_agent}->request($req);
-        my $xml = $self->{xml_treepp}->parse( $res->content );
+        my $xml = XML::LibXML::Simple::XMLin( $res->content, keepRoot => 1, );
         $self->_xml($xml);
     }
     else {
@@ -59,17 +59,12 @@ sub _prepare {
         %LWP_UserAgent_config = %{ $self->config->{LWP_UserAgent} };
     }
     $self->{user_agent} = LWP::UserAgent->new(%LWP_UserAgent_config);
-    my %XML_TreePP_config = ();
-    if ( ref $self->config->{XML_TreePP} eq 'HASH' ) {
-        %XML_TreePP_config = %{ $self->config->{XML_TreePP} };
-    }
-    $self->{xml_treepp} = XML::TreePP->new(%XML_TreePP_config);
     my $yahoo_api_appid = $self->config->{yahoo_api_appid};
     croak("you must set your own 'yahoo_api_app_id'") if !$yahoo_api_appid;
-    $self->{url} =
-        'http://search.yahooapis.jp/WebSearchService/V1/webSearch?appid='
-      . $yahoo_api_appid
-      . '&results=50&adult_ok=1&query=';
+    $self->{url}
+        = 'http://search.yahooapis.jp/WebSearchService/V2/webSearch?appid='
+        . $yahoo_api_appid
+        . '&results=20&adult_ok=1&query=';
 }
 
 1;

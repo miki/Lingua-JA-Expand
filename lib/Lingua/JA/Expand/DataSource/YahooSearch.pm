@@ -60,7 +60,7 @@ sub _prepare {
     }
     $self->{user_agent} = LWP::UserAgent->new(%LWP_UserAgent_config);
     my $yahoo_api_appid = $self->config->{yahoo_api_appid};
-    croak("you must set your own 'yahoo_api_app_id'") if !$yahoo_api_appid;
+    croak("you must set your own 'yahoo_api_appid'") if !$yahoo_api_appid;
     $self->{url}
         = 'http://search.yahooapis.jp/WebSearchServicePro/V1/webSearch?appid='
         . $yahoo_api_appid
